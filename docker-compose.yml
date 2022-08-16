@@ -39,7 +39,7 @@ services:
       - rabbitmq
     environment:
       DEBUG: 1
-      BASE_DOMAIN: localhost.msparp.com
+      BASE_DOMAIN: localhost:5123
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
@@ -48,6 +48,8 @@ services:
       CELERY_BROKER: amqp://msparp:development@rabbitmq:5672/msparp
       CELERY_RESULT: redis://redis:6379/1
       NOMAIL: 1
+    ports:
+      - "5123:5000"
 
   live:
     build: .
