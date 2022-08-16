@@ -73,16 +73,13 @@ class NewparpPipeline(Pipeline, NewparpRedis):
 from newparp.helpers.users import queue_user_meta, get_ip_banned
 
 
-cookie_domain = "." + os.environ["BASE_DOMAIN"]
-
-
 def set_cookie(response):
     if "newparp" not in request.cookies:
         response.set_cookie(
             "newparp",
             g.session_id,
             max_age=365 * 24 * 60 * 60,
-            domain=cookie_domain if "localhost" not in cookie_domain.lower() else None,
+            domain='.' + request.headers.get("Original-Newparp-Host"),
         )
     return response
 
