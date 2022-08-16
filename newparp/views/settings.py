@@ -149,7 +149,21 @@ def change_email():
     ).count() != 0:
         return render_template("settings/log_in_details.html", error="email_taken")
 
-    send_email("verify", email_address)
+#    send_email("verify", email_address)
+
+    #lol
+    g.user.email_verified = True
+    if g.user.group == "new":
+        email_bans = (
+            g.db.query(func.count("*"))
+            .select_from(EmailBan)
+            .filter(literal(g.user.email_address).op("~*")(EmailBan.pattern))
+            .scalar()
+        )
+        if email_bans:
+            return render_template("account/banned_email.html")
+        else:
+            g.user.group = "active"
 
     return redirect(url_for("settings_log_in_details", saved="email_address"))
 
