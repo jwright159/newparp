@@ -32,7 +32,7 @@ services:
   web:
     build: .
     restart: always
-    command: ./extras/ensure_database.py gunicorn -b 0.0.0.0:5000 -k gevent -w 3 newparp:app
+    command: ./extras/ensure_database.py gunicorn -b 0.0.0.0:5000 -k gevent -w 3 --capture-output --log-level debug newparp:app
     links:
       - redis
       - postgres
